@@ -1,61 +1,25 @@
+import java.util.*;
+import java.lang.Object.*;
+
 class Solution
 {
     public int solution(int []A, int []B)
     {
-        //mergeSort는 오름차순 정렬
-        mergeSort(A, A.length);
-        mergeSort(B, B.length);        
-        
+        //오름차순 정렬
+        Arrays.sort(A);
+        Arrays.sort(B);
+
+        //정렬 조건(내림차순...etc) 추가는 wrapper class만 가능하다.
+        //Arrays.sort(arr, Comparator)
+        //정렬 범위 지정 가능
+        //Arrays.sort(arr, int from, int to) -> from~to-1까지 정렬
         
         int answer = 0;
         for(int i = 0; i < A.length; i++){
             answer += A[i] * B[A.length-i-1];
         }
-
+        
         return answer;
-    }
-    
-    public static void mergeSort(int[] a, int len)
-    {
-        //divide
-        if(len < 2){
-            return;
-        }
-        
-        int mid = len/2;
-        int[] l = new int[mid];
-        int[] r = new int[len-mid];
-        
-        for(int i = 0; i < mid; i++){
-            l[i] = a[i];
-        }
-        for(int i = 0; i < len-mid; i++){
-            r[i] = a[mid + i];
-        }
-        mergeSort(l, mid);
-        mergeSort(r, len-mid);
-        
-        //conquer
-        merge(a, l, mid, r, len-mid);
-    }
-    
-    public static void merge(int[] a, int[] l, int l_len, int[] r, int r_len)
-    {
-        int i = 0, j = 0, k = 0;
-        while(i < l_len && j < r_len){
-            if(l[i] < r[j]){
-                a[k++] = l[i++];
-            }
-            else{
-                a[k++] = r[j++];
-            }
-        }
-        while(i < l_len){
-            a[k++] = l[i++];
-        }
-        while(j < r_len){
-            a[k++] = r[j++];
-        }
     }
 }
 
