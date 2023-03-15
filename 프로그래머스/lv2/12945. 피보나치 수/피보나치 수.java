@@ -1,7 +1,7 @@
 class Solution {
     
     //전역변수
-    static int[] mem = new int[100001];
+    static int[] mem = new int[100001];     //DP-Memoization
     int MOD = 1234567;
         
     public int solution(int n) {    
@@ -25,7 +25,10 @@ class Solution {
         }
         
         //없으면 계산해서 저장
-        mem[n] = (fibo(n-1)%MOD + fibo(n-2)%MOD)%MOD;
+        //mem[n] = (fibo(n-1)%MOD + fibo(n-2)%MOD)%MOD;
+        // (a+b)%M = ((a%M)+(b%M))%M
+        //=> MOD가 작아서 나머지가 그렇게 큰 수가 나오지 않기에, 이렇게까지 할 필요X
+        mem[n] = (fibo(n-1) + fibo(n-2))%MOD;
         return mem[n];   
     }
 }
