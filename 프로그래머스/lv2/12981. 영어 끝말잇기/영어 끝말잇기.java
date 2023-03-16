@@ -1,48 +1,25 @@
+import java.util.*;     //for using 'Set' class
+
 class Solution {
     public int[] solution(int n, String[] words) {
+    
+        //Set: 중복 허용x, 순서x
+        Set hash = new HashSet();
+        hash.add(words[0]);
+        char endCh = words[0].charAt(words[0].length()-1);
+        
+        for(int i = 1; i < words.length; i++){
 
-        int turn = 100;
-        int loser = 100;
-        
-        //O(n^2)
-        for(int i  = 0; i < words.length; i++){
-            for(int j = i+1; j < words.length; j++){
-                if(words[i].equals(words[j])){  //탈락자 발생
-                    turn = j/n + 1;
-                    loser = j%n + 1;                    
-                    break;
-                }
-            }
-        }
-        
-        int turn_1 = 100;
-        int loser_1 = 100;
-        
-        //O(n)
-        char endCh = words[0].charAt(words[0].length() - 1);
-        for(int i = 1; i < words.length - 1; i++){
             char startCh = words[i].charAt(0);
-            if(endCh == startCh){
-                endCh = words[i].charAt(words[i].length()-1);
-                continue;
+            
+            //hash.add는 중복 단어라면 추가하지 않고 false를 반환한다
+            if(endCh != startCh || !hash.add(words[i])){    //탈락자 발생
+                return new int[]{(i%n + 1), (i/n + 1)};
             }
             
-            //탈락자 발생
-            turn_1 = i/n + 1;
-            loser_1 = i%n + 1;
-            break;
+            endCh = words[i].charAt(words[i].length()-1);
         }
         
-        if(turn == 100 && turn_1 == 100){
-            return new int[]{0,0};
-        }
-        if(turn < turn_1){
-            return new int[]{loser, turn};
-        }
-        if(turn == turn_1){
-            return (loser < loser_1) ? new int[]{loser, turn} : new int[]{loser_1, turn_1}; 
-        }
-        return new int[]{loser_1, turn_1};
-        
+        return new int[]{0, 0};
     }
 }
