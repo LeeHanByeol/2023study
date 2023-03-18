@@ -24,8 +24,10 @@ class Solution {
             }
         }
                 
-        //
+
         Arrays.sort(numBySize, 0, size_index+1);
+        
+        //개수가 많은 귤부터 선택
         int answer = 0;
         while(k > 0){
             k -= numBySize[size_index--];
