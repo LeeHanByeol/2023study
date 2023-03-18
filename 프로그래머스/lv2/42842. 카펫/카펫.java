@@ -2,23 +2,19 @@ class Solution {
     public int[] solution(int brown, int yellow) {
 
         
-        int row = yellow;
-        int col = 1;
+        //전체 카펫의 가로길이 w, 세로길이 h
+        int w, h;
 
-        while(true){
-            while(yellow % row != 0){
-                row--;
-            }
-            col = yellow / row;
-            
-            if((row + col)<<1 == (brown - 4)){
-                break;
-            }
-            else{
-                row--;
-            }
-        }
+        // 2*(w+h) = brown + 4
+        int add = (brown+4)>>1;
+        // 넓이w*h = yellow+brown
+        int mul = yellow + brown;
+        // (w-h)^2 = (w+h)^2 - 4wh
+        int sub = (int)Math.sqrt(Math.pow(add, 2) - 4*mul);
         
-        return new int[]{row+2, col+2};
+        w = (add+sub)>>1;
+        h = (add-sub)>>1;
+        
+        return new int[]{w, h};
     }
 }
