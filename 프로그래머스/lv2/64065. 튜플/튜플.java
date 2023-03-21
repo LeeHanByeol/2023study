@@ -4,20 +4,17 @@ class Solution {
     public int[] solution(String s) {
         
         //s 전처리
-        String[] set = s.substring(1, s.length()-1).split("},*");
+        String[] set = s.substring(2, s.length()-2).split("[}][,][{]");
         Arrays.sort(set, (a,b)-> a.length()-b.length());
-
-        //
+        
         int[] answer = new int[set.length];
         int idx = 0;
         Set <Integer> duplicate = new HashSet<Integer>();
         for(String a : set){
-            String[] cur = a.substring(1).split(",");
-            
-            for(int i = 0; i < cur.length; i++){
-                int num = Integer.parseInt(cur[i]);
-                if(duplicate.add(num)){
-                    answer[idx++] = num;
+            for(String num : a.split(",")){
+                int n = Integer.parseInt(num);
+                if(duplicate.add(n)){
+                    answer[idx++] = n;
                 }
             }
         }
