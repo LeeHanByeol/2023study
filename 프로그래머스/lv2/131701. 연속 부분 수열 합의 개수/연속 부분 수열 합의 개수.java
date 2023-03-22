@@ -8,7 +8,9 @@ class Solution {
             for(int start_idx = 0; start_idx < elements.length; start_idx++){
                 int sum = 0;
                 for(int i = 0; i < len; i++){
-                    sum += elements[(start_idx + i) % elements.length];
+                    int idx = start_idx + i;
+                    idx = (idx < elements.length) ? idx : (idx - elements.length);
+                    sum += elements[idx];
                 }
                 num_list.add(sum);
             }
