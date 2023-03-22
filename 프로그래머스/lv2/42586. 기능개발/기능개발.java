@@ -16,11 +16,6 @@ class Solution {
             queue.add(count);
         }
         
-        int size = queue.size();
-        int[] answer = new int[size];
-        for(int i = 0; i < size; i++){
-            answer[i] = queue.poll();
-        }
-        return answer;
+        return queue.stream().mapToInt(Integer::intValue).toArray();
     }
 }
