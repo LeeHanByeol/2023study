@@ -3,20 +3,13 @@ import java.util.*;
 class Solution {
     public int solution(int n, int k) {
 
-        //k진수로 변환
-        String str = "";
-        while(n != 0){
-            str = (n%k) + str;
-            n /= k;
-        }
-        
-        //조건 만족하게 나눠줌
-        String[] P = str.split("0+");
+        //n을 k진수로 변환 & 조건에 부합하게 나눠줌
+        String[] P = Integer.toString(n, k).split("0+");
 
         //10진수로 변환해서 소수이면 answer++
         int answer = 0;
         for(String a : P){
-            if(isPrime(Long.parseLong(a))){
+            if(isPrime(Long.parseLong(a))){ //int로 변환하면 runtime error
                 answer++;
             }
         }
