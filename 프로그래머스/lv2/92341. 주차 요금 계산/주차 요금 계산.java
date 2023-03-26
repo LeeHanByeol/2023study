@@ -2,6 +2,7 @@ import java.util.*;
 
 class Solution {
 
+    //차량번호 오름차순으로 저장하기 위해 TreeMap
     static Map<Integer, Integer> car = new TreeMap<>((a,b) -> a - b);
     static int[] fees;
     
