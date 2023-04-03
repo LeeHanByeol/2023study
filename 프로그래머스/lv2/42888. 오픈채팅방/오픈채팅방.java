@@ -1,39 +1,60 @@
 import java.util.*;
 
 class Solution {
-    public String[] solution(String[] record) {
-
-        Map<String, String> nickname = new HashMap<>();
-        Queue<String> records = new LinkedList<>();
+    
+    public class UserInfo{
+        String uid;
+        String nickname;
         
+        public UserInfo(String uid, String nickname){
+            this.uid = uid;
+            this.nickname = nickname;
+        }
+    }
+    
+    public class Command{
+        char command;
+        String uid;
+        
+        public Command(char command, String uid){
+            this.command = command;
+            this.uid = uid;
+        }
+    }
+    
+    
+    public String[] solution(String[] record) {
+        
+        Map<String, UserInfo> users = new HashMap<>();
+        Queue<Command> records = new LinkedList<>(); 
+        
+
         for(String a : record){
             String[] cur = a.split(" ");
-            
-            if(cur[0].charAt(0) == 'L'){    //Leave
-                records.add(cur[1]);
-                continue;
+            switch(cur[0].charAt(0)){
+                case 'E':
+                    records.add(new Command('E', cur[1]));
+                    users.put(cur[1], new UserInfo(cur[1], cur[2]));
+                    break;
+                case 'L':
+                    records.add(new Command('L', cur[1]));
+                    break;
+                case 'C':
+                    users.put(cur[1], new UserInfo(cur[1], cur[2]));
+                    break;
             }
-            if(cur[0].charAt(0) == 'E'){    //Enter
-                records.add(cur[1]);
-            }                        
-            
-            nickname.put(cur[1], cur[2]);   //consider nickname might be changed
         }
-
         
         String[] answer = new String[records.size()];
         int idx = 0;
-                
-        //user in chatRoom
-        Set<String> isIn = new HashSet<>();
-        for(String uid : records){
-            
-            if(isIn.remove(uid)){
-                answer[idx++] = nickname.get(uid) + "님이 나갔습니다.";
-            }
-            else{
-                isIn.add(uid);
-                answer[idx++] = nickname.get(uid) + "님이 들어왔습니다.";
+        for(Command a : records){
+            switch(a.command){
+                case 'E':
+                    answer[idx++] = users.get(a.uid).nickname + "님이 들어왔습니다.";
+                    break;
+                case 'L':
+                    answer[idx++] = users.get(a.uid).nickname + "님이 나갔습니다.";                    
+                    break;
             }
         }
         
