@@ -1,71 +1,64 @@
 import java.util.*;
 
 class Solution {
-    public static String[] solution(String[] files) {
-        Arrays.sort(files, (o1, o2) -> {
-
-            String[] part1 = modPart(o1);
-            String[] part2 = modPart(o2);
-
-            int headComparing = part1[0].compareTo(part2[0]);
-            int numberComparing = Integer.parseInt(part1[1]) - Integer.parseInt(part2[1]);
-
-            if (headComparing == 0) {
-                if (numberComparing == 0) {
-                    return 0;
-                }
-                return numberComparing;
-            }
-            return headComparing;
-        });
-
+        
+    public String[] solution(String[] files) {
+        
+        Arrays.sort(files, comp);
         return files;
     }
+    
+    
+    public static Comparator<String> comp = new Comparator<>(){
+      
+        @Override
+        public int compare(String f1, String f2){
+            
+            String[] F1 = split(f1);
+            String[] F2 = split(f2);
+            
+            int head_compare = F1[0].compareToIgnoreCase(F2[0]);
+            int num_compare = Integer.parseInt(F1[1]) - Integer.parseInt(F2[1]);
+            
+            if(head_compare == 0){
+                if(num_compare == 0) return 0;      //같을 경우 순서 유지
+                return num_compare;
+            }
+            
+            return head_compare;
+        }
+    };
+    
+    public static String[] split(String str){
+        
+        String[] arr = new String[2];
+        boolean head = true;
+        int start = 0;
 
-    /**
-     * head, number, tail을 나눔
-     * @param s 나눌 문자열
-     * @return String[0] = Head
-     *         String[1] = Number
-     *         String[2] = Tail
-     * */
-    private static String[] modPart(String s) {
-        String[] part = new String[3];
-        boolean state = false;
-        int numberStartIdx = -1;
-
-        for (int i = 0; i < s.length(); i++) {
-            if (!state && isNumber(s.charAt(i))) {
-                part[0] = s.substring(0, i).toLowerCase();
-                numberStartIdx = i;
-                state = true;
-                if (i == s.length() - 1) {
-                    part[1] = s.substring(numberStartIdx);
-                }
-            } else if (state && !isNumber(s.charAt(i))) {
-                String number = s.substring(numberStartIdx, i);
-                if (number.length() > 5) {
-                    i = i - (number.length() - 5);
-                }
-                part[1] = s.substring(numberStartIdx, i);
-                part[2] = s.substring(i);
+        for(int i = 0; i < str.length(); i++){
+            
+            if(head && isNum(str.charAt(i))){   //숫자 등장 -> head 끝
+                arr[0] = str.substring(0, i);
+                head = false;
+                start = i;
+                continue;
+            }
+            
+            if(!head && ( i >= start+5 || !isNum(str.charAt(i)))){    //5개 초과 혹은 문자 등장 -> num 끝
+                arr[1] = str.substring(start, i);
                 break;
             }
         }
-        if (part[1] == null) {
-            int i = s.length();
-            String number = s.substring(numberStartIdx, i);
-            if (number.length() > 5) {
-                i = i - (number.length() - 5);
-            }
-            part[1] = s.substring(numberStartIdx, i);
-            part[2] = s.substring(i);
+        
+        
+        if(arr[1] == null){
+            arr[1] = str.substring(start);
         }
-
-        return part;
+        return arr;
     }
-
-    private static boolean isNumber(char c) {
-        return c >= '0' && c <= '9';
+    
+    public static boolean isNum(char c){
+        return ('0' <= c && c <= '9');
     }
+    
 }
