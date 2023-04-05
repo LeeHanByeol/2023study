@@ -13,7 +13,11 @@ class Solution {
       
         @Override
         public int compare(String f1, String f2){
-            
+            //f1 > f2이면 양수
+            //f1 == f2이면 0
+            //f1 < f2이면 
+                
+                
             String[] F1 = split(f1);
             String[] F2 = split(f2);
             
