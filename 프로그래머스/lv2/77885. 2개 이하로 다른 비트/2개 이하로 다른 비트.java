@@ -13,19 +13,23 @@ class Solution {
     
     public String change(String str){
         
-        if(str.endsWith("0")){      //.....0
-            return str.substring(0, str.length()-1) + "1";
+        StringBuilder sb = new StringBuilder(str);
+        int len = sb.length();
+        
+        if(sb.charAt(len-1) == '0'){          //.....0
+            sb.setCharAt(len-1, '1');        //-> .....1
         }
-        
-        if(!str.contains("01")){    //111111
-            return "10" + str.substring(1);
+        else{
+            int lastIdx = sb.lastIndexOf("01");
+
+            if(lastIdx == -1){             //111111
+                sb.insert(1, '0');        //->10111111
+            }
+            else{                                       //....01...
+                sb.replace(lastIdx, lastIdx+2, "10");   //->....10...
+            }
+            
         }
-        
-        //....01111
-        int lastIdx = str.lastIndexOf("01");
-        
-        return str.substring(0, lastIdx) + "10" 
-            + ((lastIdx == str.length()-2) ? "" : str.substring(lastIdx+2));
-        
+        return sb.toString();
     }
 }
