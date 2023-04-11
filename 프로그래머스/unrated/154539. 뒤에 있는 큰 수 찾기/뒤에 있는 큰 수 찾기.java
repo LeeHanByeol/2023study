@@ -3,25 +3,25 @@ import java.util.*;
 class Solution {
     public int[] solution(int[] numbers) {
         int[] answer = new int[numbers.length];
-        int idx = 0;
-
-        Stack<Integer> idxStk = new Stack<>();
-        for(int n : numbers){
+        
+        answer[numbers.length-1] = -1;
+        for(int i = numbers.length - 1; i >= 0; i--){
             
-            while(!idxStk.empty()){
-                int idx_tmp = idxStk.peek();
-                if(numbers[idx_tmp] >= n){
+            for(int j = i+1; j < numbers.length; j++){
+                if(numbers[i] < numbers[j]){
+                    answer[i] = numbers[j];
                     break;
                 }
-                answer[idx_tmp] = n;  
-                idxStk.pop();
+                //뒤에 있는 애보다 내가 더 크거나 같음
+                if(answer[j] == -1){
+                    answer[i] = -1;
+                    break;
+                }
+                if(numbers[i] < answer[j]){
+                    answer[i] = answer[j];
+                    break;
+                }
             }
-            
-            idxStk.push(idx++);
-        }
-        
-        while(!idxStk.empty()){
-            answer[idxStk.pop()] = -1;
         }
         
         return answer;
