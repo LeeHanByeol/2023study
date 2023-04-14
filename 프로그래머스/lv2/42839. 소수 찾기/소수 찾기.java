@@ -15,7 +15,6 @@ class Solution {
     public int candidate(String[] arr, String cur, boolean[] visited){
         
         int answer = 0;
-        
         if(isPrime(cur)){
             answer++;
         }
@@ -37,15 +36,19 @@ class Solution {
         }
         
         int n = Integer.parseInt(number);
+        if(n==2 && !checked.contains(2)){
+            checked.add(2);
+            return true;
+        }
 
-        //기존에 구했던 수(중복)
-        if(checked.contains(n)){
+        //기존에 구했던 수(중복) or 짝수
+        if(checked.contains(n) || (n&1) == 0){
             return false;
         }
         
         //처음 구하는 수
         int end = (int)Math.sqrt(n);
-        for(int i = 2; i <= end; i++){
+        for(int i = 3; i <= end; i+=2){
             if(n % i == 0){
                 checked.add(n);
                 return false;
