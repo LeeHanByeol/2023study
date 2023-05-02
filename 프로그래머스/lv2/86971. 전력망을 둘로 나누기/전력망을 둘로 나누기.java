@@ -1,78 +1,43 @@
 import java.util.*;
 class Solution {
     
-    Set<Integer> A = new HashSet<>();
-    Set<Integer> B = new HashSet<>();
-    
+    int nodeNum;                //num of nodes
+    boolean[][] map;            //map[a][b] : are node A and B connected?
+    boolean[] visited;          //this node is already visited
+    int answer = 100;           //min of difference
+
     public int solution(int n, int[][] wires) {
-        int answer = n;
-        
-        //Exhaustive Search
-        for(int i = 0; i < n-1; i++){
-            
-            boolean[] isApplied = new boolean[n-1];         //wires applied -> true   
-            
-            //divide nodes(=#num) into group A and B
-            //apply 'i'th wire
-            A.add(wires[i][0]);
-            B.add(wires[i][1]);
-            isApplied[i] = true;
-            
-            //apply whole wires
-            while(!isComplete(isApplied)){
-                for(int j = 0; j < n-1; j++){
-                    if(!isApplied[j]){    //unapplied wire
-                        isApplied[j] = sort(wires[j]);
-                    }
-                }
-            }
-            
-            //calculate abs
-            int diff = (A.size() > B.size()) ? (A.size() - B.size()) : (B.size() - A.size());
-            if(diff < answer){
-                answer = diff;
-            }
-            
-            //reset
-            A.clear();
-            B.clear();
+
+        //initialize
+        nodeNum = n;
+        visited = new boolean[n+1];
+        map = new boolean[n+1][n+1];
+        for(int[] wire : wires){
+            map[wire[0]][wire[1]] = map[wire[1]][wire[0]] = true;
         }
         
+        dfs(1);
+
         return answer;
     }
     
-    public boolean sort(int[] wire){
+    public int dfs(int node1){
         
-        int node1 = wire[0];
-        int node2 = wire[1];
-        
-        if(A.contains(node1)){
-            A.add(node2);
-            return true;
-        }
-        if(A.contains(node2)){
-            A.add(node1);
-            return true;
-        }
-        if(B.contains(node1)){
-            B.add(node2);
-            return true;
-        }
-        if(B.contains(node2)){
-            B.add(node1);
-            return true;
+        visited[node1] = true;
+        int child = 1;
+        for(int node2 = 1; node2 <= nodeNum; node2++){
+            if(!visited[node2] && map[node1][node2]){
+                child += dfs(node2);
+            }
         }
         
-        return false;
+        int diff = (child<<1) - nodeNum;     //diff = child - (nodeNum - child);
+        if(diff < 0) diff = ~diff+1;         //abs
+
+        answer = (answer < diff) ? answer : diff;
+        
+        return child;
     }
     
-    public boolean isComplete(boolean[] isApplied){
 
-        //completely apply all wires -> true
-        //unapplied wire remains -> false
-        for(boolean apply : isApplied){
-            if(!apply) return false;
-        }
-        return true;
-    }
 }
